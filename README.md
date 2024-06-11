@@ -7,7 +7,6 @@ CustomerController.php:
 This controller manages CRUD operations for customer data within the Laravel application. It serves as the API controller, providing data for the CustomerListController to consume. The methods in this controller handle API requests for retrieving all customers, storing a new customer, fetching a specific customer by ID, updating a customer's details, and deleting a customer.
 
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -76,7 +75,6 @@ CustomerListController.php:
 This controller facilitates the interaction between the application and the API. It includes methods for fetching the list of customers from the API, adding a new customer via the API, viewing a specific customer's details, updating a customer's information, and deleting a customer. It relies on the CustomerController API endpoints to perform these actions.
 
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -90,16 +88,12 @@ class CustomerListController extends Controller
 {
     public function fetchCustomerList(Request $request)
 {
-    // Set API endpoint URL
-    $apiUrl = 'http://localhost:4001/api/customers'; // Change this URL to match your Laravel API endpoint
+    $apiUrl = 'http://localhost:4001/api/customers';
 
-    // Get the user's personal access token from the request
     $accessToken = env('CLIENT_API');
 
-    // Initialize cURL session
     $curl = curl_init();
 
-    // Set cURL options
     curl_setopt_array($curl, [
         CURLOPT_URL => $apiUrl,
         CURLOPT_RETURNTRANSFER => true,
@@ -109,20 +103,16 @@ class CustomerListController extends Controller
         ],
     ]);
 
-    // Execute cURL request
     $response = curl_exec($curl);
 
-    // Check for curl errors
     if ($response === false) {
         $errorMessage = curl_error($curl);
         $errorCode = curl_errno($curl);
         return response()->json(['error' => 'Curl error: ' . $errorMessage . ' (Code: ' . $errorCode . ')'], 500);
     }
 
-    // Close cURL session
     curl_close($curl);
 
-    // Decode JSON response
     $data = json_decode($response, true);
 
     return Datatables::of($data)
@@ -139,13 +129,10 @@ class CustomerListController extends Controller
 public function AddCustomer(Request $request)
 {
 
-    // Set API endpoint URL
     $apiUrl = 'http://localhost:4001/api/customers'; // Change this URL to match your Laravel API endpoint
 
-    // Get the user's personal access token from the request
     $accessToken = env('CLIENT_API');
 
-    // Validate the incoming request data
     $validator = Validator::make($request->all(), [
         'first_name' => 'required|string|max:50',
         'last_name' => 'required|string|max:50',
@@ -158,7 +145,6 @@ public function AddCustomer(Request $request)
         return response()->json($validator->errors(), 422);
     }
 
-    // Prepare the data to be sent in the request body
     $postData = [
         'first_name' => $request->input('first_name'),
         'last_name' => $request->input('last_name'),
@@ -167,10 +153,8 @@ public function AddCustomer(Request $request)
         'email' => $request->input('email'),
     ];
 
-    // Initialize cURL session
     $curl = curl_init();
 
-    // Set cURL options
     curl_setopt_array($curl, [
         CURLOPT_URL => $apiUrl,
         CURLOPT_RETURNTRANSFER => true,
@@ -182,36 +166,28 @@ public function AddCustomer(Request $request)
         CURLOPT_POSTFIELDS => json_encode($postData),
     ]);
 
-    // Execute cURL request
     $response = curl_exec($curl);
 
-    // Check for cURL errors
     if ($response === false) {
         $errorMessage = curl_error($curl);
         $errorCode = curl_errno($curl);
         return response()->json(['error' => 'cURL error: ' . $errorMessage . ' (Code: ' . $errorCode . ')'], 500);
     }
 
-    // Close cURL session
     curl_close($curl);
 
-    // Decode JSON response
     $data = json_decode($response, true);
 
-    // Return the response data
     return response()->json($data, 201);
 }
 
 public function ViewCustomer(Request $request)
 {
 
-    // Set API endpoint URL
     $apiUrl = 'http://localhost:4001/api/customers/'.$request->input('id'); // Change this URL to match your Laravel API endpoint
 
-    // Get the user's personal access token from the request
     $accessToken = env('CLIENT_API');
 
-    // Initialize cURL session
     $curl = curl_init();
 
     curl_setopt_array($curl, [
@@ -223,36 +199,28 @@ public function ViewCustomer(Request $request)
         ],
     ]);
 
-    // Execute cURL request
     $response = curl_exec($curl);
 
-    // Check for cURL errors
     if ($response === false) {
         $errorMessage = curl_error($curl);
         $errorCode = curl_errno($curl);
         return response()->json(['error' => 'cURL error: ' . $errorMessage . ' (Code: ' . $errorCode . ')'], 500);
     }
 
-    // Close cURL session
     curl_close($curl);
 
-    // Decode JSON response
     $data = json_decode($response, true);
 
-    // Return the response data
     return response()->json($data, 200);
 }
 
 public function UpdateCustomer(Request $request)
 {
 
-    // Set API endpoint URL
     $apiUrl = 'http://localhost:4001/api/customers/'.$request->input('id'); // Change this URL to match your Laravel API endpoint
 
-    // Get the user's personal access token from the request
     $accessToken = env('CLIENT_API');
 
-    // Validate the incoming request data
     $validator = Validator::make($request->all(), [
         'first_name' => 'required|string|max:50',
         'last_name' => 'required|string|max:50',
@@ -265,7 +233,6 @@ public function UpdateCustomer(Request $request)
         return response()->json($validator->errors(), 422);
     }
 
-    // Prepare the data to be sent in the request body
     $postData = [
         'id' => $request->input('id'),
         'first_name' => $request->input('first_name'),
@@ -275,10 +242,8 @@ public function UpdateCustomer(Request $request)
         'email' => $request->input('email'),
     ];
 
-    // Initialize cURL session
     $curl = curl_init();
 
-    // Set cURL options
     curl_setopt_array($curl, [
         CURLOPT_URL => $apiUrl,
         CURLOPT_RETURNTRANSFER => true,
@@ -290,23 +255,18 @@ public function UpdateCustomer(Request $request)
         CURLOPT_POSTFIELDS => json_encode($postData),
     ]);
 
-    // Execute cURL request
     $response = curl_exec($curl);
 
-    // Check for cURL errors
     if ($response === false) {
         $errorMessage = curl_error($curl);
         $errorCode = curl_errno($curl);
         return response()->json(['error' => 'cURL error: ' . $errorMessage . ' (Code: ' . $errorCode . ')'], 500);
     }
 
-    // Close cURL session
     curl_close($curl);
 
-    // Decode JSON response
     $data = json_decode($response, true);
 
-    // Return the response data
     return response()->json($data, 200);
 }
 
@@ -573,12 +533,9 @@ This Blade template file contains the HTML structure and JavaScript code for ren
             
 
             $('#saveCustomer').click(function(event) {
-                // Prevent default form submission
                 event.preventDefault();
-
-                // Send AJAX request to add customer
                 $.ajax({
-                    url: '{{ route("save-customer") }}', // Replace with your route
+                    url: '{{ route("save-customer") }}',
                     type: 'POST',
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -591,21 +548,16 @@ This Blade template file contains the HTML structure and JavaScript code for ren
                     dataType: 'json',
                     success: function(response, status, xhr) {
                         if (xhr.status === 201) {
-                            // Customer added successfully
                             alert('Customer successfully inserted.');
                             $('#addCustomerModal').modal('hide');
-                            // Optionally, you can reload the datatable or update it with the new data
                             $('#customerTable').DataTable().ajax.reload();
                         } else {
-                            // Handle other success responses if necessary
                             console.error('Unexpected response status:', xhr.status);
                             alert('Unexpected response. Please try again later.');
                         }
                     },
                     error: function(xhr, status, error) {
-                        // An error occurred, handle it appropriately (e.g., display error message)
                         console.error('Error adding customer:', xhr.responseText);
-                        // Display error message to the user (you can customize this part)
                         alert('Error adding customer. Please try again later.');
                     }
                 });
@@ -615,7 +567,7 @@ This Blade template file contains the HTML structure and JavaScript code for ren
                 
                 var data_id = $(this).data('id');
                 $.ajax({
-                    url: '{{ route("view-customer") }}', // Replace with your route
+                    url: '{{ route("view-customer") }}',
                     type: 'POST',
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -669,12 +621,9 @@ This Blade template file contains the HTML structure and JavaScript code for ren
             });
             
             $('#updateCustomer').click(function(event) {
-                // Prevent default form submission
                 event.preventDefault();
-
-                // Send AJAX request to add customer
                 $.ajax({
-                    url: '{{ route("update-customer") }}', // Replace with your route
+                    url: '{{ route("update-customer") }}',
                     type: 'POST',
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -688,21 +637,16 @@ This Blade template file contains the HTML structure and JavaScript code for ren
                     dataType: 'json',
                     success: function(response, status, xhr) {
                         if (xhr.status === 200) {
-                            // Customer added successfully
                             alert('Customer successfully updated.');
                             $('#updateCustomerModal').modal('hide');
-                            // Optionally, you can reload the datatable or update it with the new data
                             $('#customerTable').DataTable().ajax.reload();
                         } else {
-                            // Handle other success responses if necessary
                             console.error('Unexpected response status:', xhr.status);
                             alert('Unexpected response. Please try again later.');
                         }
                     },
                     error: function(xhr, status, error) {
-                        // An error occurred, handle it appropriately (e.g., display error message)
                         console.error('Error updating data of customer:', xhr.responseText);
-                        // Display error message to the user (you can customize this part)
                         alert('Error updating data of customer. Please try again later.');
                     }
                 });
@@ -715,7 +659,6 @@ This Blade template file contains the HTML structure and JavaScript code for ren
                 $('#deleteConfirmationModal').modal('show');
             });
 
-        // Handle click event on confirm delete button
         $('#confirmDeleteBtn').on('click', function() {
 
             var data_id = $(this).data('customer-id');
@@ -730,21 +673,16 @@ This Blade template file contains the HTML structure and JavaScript code for ren
                 dataType: 'json',
                 success: function(response, status, xhr) {
                     if (xhr.status === 200) {
-                        // Customer added successfully
                         alert('Customer successfully deleted the customer.');
                         $('#deleteConfirmationModal').modal('hide');
-                        // Optionally, you can reload the datatable or update it with the new data
                         $('#customerTable').DataTable().ajax.reload();
                     } else {
-                        // Handle other success responses if necessary
                         console.error('Unexpected response status:', xhr.status);
                         alert('Unexpected response. Please try again later.');
                     }
                 },
                 error: function(xhr, status, error) {
-                    // An error occurred, handle it appropriately (e.g., display error message)
                     console.error('Error deleting data of customer:', xhr.responseText);
-                    // Display error message to the user (you can customize this part)
                     alert('Error deleting data of customer. Please try again later.');
                 }
             });
@@ -812,6 +750,9 @@ Route::post('/delete-customer', [App\Http\Controllers\CustomerListController::cl
 
 require __DIR__.'/auth.php';
 
+.env
+
+CLIENT_API="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YzQyOWQzZC04Njk5LTQ4ODQtOTJiOS00ZjAxY2FlNDMzZTUiLCJqdGkiOiJjNjcwNzlkNDVhZDkzNGU1ZGU4ZjdlOWFmZWJlYTM2YzRkNzcxODBlOTEyMWUzN2M1NWQwNzU4MzJkYTQxMDVlOGEyNTRmODRmN2ExODMxYSIsImlhdCI6MTcxODA5OTIzMy43Mzg5MjYsIm5iZiI6MTcxODA5OTIzMy43Mzg5MywiZXhwIjoxNzQ5NjM1MjMzLjAwMjI0NCwic3ViIjoiMiIsInNjb3BlcyI6W119.YrHyAGI-vf2a0K5If4EVQHM0mWeWv2itgCS4dK5sNn2AXcQdVn_6iqyryxWvZi2LVREZPhgOqyoFRKQCEL_Maix53UTuWIBOr_XhEJGTxmArDXhfA07loR6RhLhbSwlaOvTRH93BuPhEZSHWS_xWEQXda7LoUTRYMBRcaCa02_pwWyfazI10PjcghhDHX9-HaxayPOaP1LMiMoa0IWI-Dk4k96bf8cOa2OvE0algkXu9m-Fi-K-8GcbB3Q9y1KaZGEkkfiv-jQuNw0UKeyB2g3WHZ9pO17bbyfN9IzBH9L5MYsVj40cWaxoV49G37OFbRykjySCHLWkU7oSdlYTT-5IMwRklZ1LpMtqtA0uV-PPc5hso98cswkewYPrQbOYLzELnJZQyXL2c4xhwwHBFrRJDpQOKvJp5z8hD7rZosAptGbz0Z2ulI7Dpw9hw37gVDYAWED8YsTBF9cmLROJGxWePnYnGFJiBW31c2KaakzHvoa8CR_Wejj_MeJT7qm314pxsW7jLsg4FAJjUfhzVi0ZRbUo5HPb4-j0ngXfwLZcu5kQiCKOSVWwWW5pKGqqWBoOEeyFE_B2oOxwCX7FAB7Zt943SgvAkNx_ANH6wZ930NWnkNCDK6NgxkIWoDJaC-QDe9X3XK3CT0ObzFR0DF4_zNBAX1Sce3WiXc-5-Yhw"
 
 Conclusion:
 
