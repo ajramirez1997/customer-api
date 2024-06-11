@@ -6,6 +6,7 @@ CustomerController.php:
 
 This controller manages CRUD operations for customer data within the Laravel application. It serves as the API controller, providing data for the CustomerListController to consume. The methods in this controller handle API requests for retrieving all customers, storing a new customer, fetching a specific customer by ID, updating a customer's details, and deleting a customer.
 
+```
 <?php
 namespace App\Http\Controllers;
 
@@ -68,12 +69,12 @@ class CustomerController extends Controller
         return response()->json(null, 204);
     }
 }
-
+```
 
 CustomerListController.php:
 
 This controller facilitates the interaction between the application and the API. It includes methods for fetching the list of customers from the API, adding a new customer via the API, viewing a specific customer's details, updating a customer's information, and deleting a customer. It relies on the CustomerController API endpoints to perform these actions.
-
+```
 <?php
 namespace App\Http\Controllers;
 
@@ -306,11 +307,11 @@ public function DeleteCustomer(Request $request)
 }
 
 }
-
+```
 customer.blade.php:
 
 This Blade template file contains the HTML structure and JavaScript code for rendering the customer data table, adding new customers, viewing customer details, updating customer information, and deleting customers. It utilizes DataTables for data rendering and Bootstrap for styling.
-
+```
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -693,9 +694,9 @@ This Blade template file contains the HTML structure and JavaScript code for ren
     </script>
 </body>
 </html>
-
+```
 routes/api.php:
-
+```
 <?php
 
 use Illuminate\Http\Request;
@@ -713,9 +714,9 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/customers/{id}', [CustomerController::class, 'update']);
     Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
 });
-
+```
 routes/web.php:
-
+```
 <?php
 
 use App\Http\Controllers\ProfileController;
@@ -749,11 +750,11 @@ Route::post('/update-customer', [App\Http\Controllers\CustomerListController::cl
 Route::post('/delete-customer', [App\Http\Controllers\CustomerListController::class, 'DeleteCustomer'])->name('delete-customer');
 
 require __DIR__.'/auth.php';
-
+```
 .env
-
+```
 CLIENT_API="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YzQyOWQzZC04Njk5LTQ4ODQtOTJiOS00ZjAxY2FlNDMzZTUiLCJqdGkiOiJjNjcwNzlkNDVhZDkzNGU1ZGU4ZjdlOWFmZWJlYTM2YzRkNzcxODBlOTEyMWUzN2M1NWQwNzU4MzJkYTQxMDVlOGEyNTRmODRmN2ExODMxYSIsImlhdCI6MTcxODA5OTIzMy43Mzg5MjYsIm5iZiI6MTcxODA5OTIzMy43Mzg5MywiZXhwIjoxNzQ5NjM1MjMzLjAwMjI0NCwic3ViIjoiMiIsInNjb3BlcyI6W119.YrHyAGI-vf2a0K5If4EVQHM0mWeWv2itgCS4dK5sNn2AXcQdVn_6iqyryxWvZi2LVREZPhgOqyoFRKQCEL_Maix53UTuWIBOr_XhEJGTxmArDXhfA07loR6RhLhbSwlaOvTRH93BuPhEZSHWS_xWEQXda7LoUTRYMBRcaCa02_pwWyfazI10PjcghhDHX9-HaxayPOaP1LMiMoa0IWI-Dk4k96bf8cOa2OvE0algkXu9m-Fi-K-8GcbB3Q9y1KaZGEkkfiv-jQuNw0UKeyB2g3WHZ9pO17bbyfN9IzBH9L5MYsVj40cWaxoV49G37OFbRykjySCHLWkU7oSdlYTT-5IMwRklZ1LpMtqtA0uV-PPc5hso98cswkewYPrQbOYLzELnJZQyXL2c4xhwwHBFrRJDpQOKvJp5z8hD7rZosAptGbz0Z2ulI7Dpw9hw37gVDYAWED8YsTBF9cmLROJGxWePnYnGFJiBW31c2KaakzHvoa8CR_Wejj_MeJT7qm314pxsW7jLsg4FAJjUfhzVi0ZRbUo5HPb4-j0ngXfwLZcu5kQiCKOSVWwWW5pKGqqWBoOEeyFE_B2oOxwCX7FAB7Zt943SgvAkNx_ANH6wZ930NWnkNCDK6NgxkIWoDJaC-QDe9X3XK3CT0ObzFR0DF4_zNBAX1Sce3WiXc-5-Yhw"
-
+```
 Conclusion:
 
 This Laravel project integrates an application and an API to manage customer data effectively. The separation of concerns between the application and the API allows for scalability and maintainability. The provided controllers, views, and routes offer a solid foundation for building upon and extending the functionality as needed.
