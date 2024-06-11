@@ -76,6 +76,7 @@ CustomerListController.php:
 This controller facilitates the interaction between the application and the API. It includes methods for fetching the list of customers from the API, adding a new customer via the API, viewing a specific customer's details, updating a customer's information, and deleting a customer. It relies on the CustomerController API endpoints to perform these actions.
 ```
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -89,7 +90,8 @@ class CustomerListController extends Controller
 {
     public function fetchCustomerList(Request $request)
 {
-    $apiUrl = 'http://localhost:4001/api/customers';
+
+    $apiUrl = 'http://customer.api.local/api/customers';
 
     $accessToken = env('CLIENT_API');
 
@@ -98,7 +100,7 @@ class CustomerListController extends Controller
     curl_setopt_array($curl, [
         CURLOPT_URL => $apiUrl,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HEADER => false, // Exclude response headers
+        CURLOPT_HEADER => false,
         CURLOPT_HTTPHEADER => [
             'Authorization: Bearer ' . $accessToken,
         ],
@@ -130,7 +132,7 @@ class CustomerListController extends Controller
 public function AddCustomer(Request $request)
 {
 
-    $apiUrl = 'http://localhost:4001/api/customers'; // Change this URL to match your Laravel API endpoint
+    $apiUrl = 'http://customer.api.local/api/customers';
 
     $accessToken = env('CLIENT_API');
 
@@ -185,7 +187,7 @@ public function AddCustomer(Request $request)
 public function ViewCustomer(Request $request)
 {
 
-    $apiUrl = 'http://localhost:4001/api/customers/'.$request->input('id'); // Change this URL to match your Laravel API endpoint
+    $apiUrl = 'http://customer.api.local/api/customers/'.$request->input('id');
 
     $accessToken = env('CLIENT_API');
 
@@ -218,7 +220,7 @@ public function ViewCustomer(Request $request)
 public function UpdateCustomer(Request $request)
 {
 
-    $apiUrl = 'http://localhost:4001/api/customers/'.$request->input('id'); // Change this URL to match your Laravel API endpoint
+    $apiUrl = 'http://customer.api.local/api/customers/'.$request->input('id');
 
     $accessToken = env('CLIENT_API');
 
@@ -275,7 +277,7 @@ public function UpdateCustomer(Request $request)
 public function DeleteCustomer(Request $request)
 {
 
-    $apiUrl = 'http://localhost:4001/api/customers/'.$request->input('id');
+    $apiUrl = 'http://customer.api.local/api/customers/'.$request->input('id');
 
     $accessToken = env('CLIENT_API');
 
@@ -307,6 +309,7 @@ public function DeleteCustomer(Request $request)
 }
 
 }
+
 ```
 customer.blade.php:
 
